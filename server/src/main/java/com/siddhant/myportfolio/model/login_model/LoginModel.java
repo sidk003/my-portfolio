@@ -8,5 +8,5 @@ public interface LoginModel {
 
     Status loginUser(User user);
 
-    Status logUserOut( User user);
+    Status logUserOut(User user);
 }

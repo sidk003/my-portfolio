@@ -34,7 +34,7 @@ public class LoginControllerImpl implements LoginController{
 
     @Override
     @PostMapping(USER_LOGOUT)
-    public Status logUserOut(User user) {
+    public Status logUserOut(@Valid @RequestBody User user) {
         return model.logUserOut(user);
     }
 }

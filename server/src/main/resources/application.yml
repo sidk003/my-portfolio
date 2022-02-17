@@ -1,0 +1,6 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://siddhu1583:siddhu569@firstcluster.noshp.mongodb.net/my-portfolio?retryWrites=true&w=majority
+
+

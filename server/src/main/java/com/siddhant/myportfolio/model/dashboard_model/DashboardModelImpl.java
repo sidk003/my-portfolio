@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 public class DashboardModelImpl implements DashboardModel {
     @Override
     public UserDetailResponseView getUserDetails() {
-
         return UserDetailResponseView.builder().build();
     }
 }
