@@ -1,25 +1,25 @@
 package com.siddhant.myportfolio.controller.dashboard_controller;
 
+import com.siddhant.myportfolio.data.User;
 import com.siddhant.myportfolio.model.dashboard_model.DashboardModel;
-import com.siddhant.myportfolio.data.UserDetailResponseView;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.siddhant.myportfolio.constants.ControllerConstants.*;
+import static com.siddhant.myportfolio.constants.ControllerConstants.DASHBOARD;
+import static com.siddhant.myportfolio.constants.ControllerConstants.DASHBOARD_GET_USER;
 
 @RestController
 @RequestMapping(DASHBOARD)
-public class DashboardControllerImpl implements DashboardController {
-    private final DashboardModel model;
+public class DashboardControllerImpl {
+  private final DashboardModel model;
 
-    public DashboardControllerImpl(DashboardModel model) {
-        this.model = model;
-    }
+  public DashboardControllerImpl(final DashboardModel model) {
+    this.model = model;
+  }
 
-    @Override
-    @GetMapping(DASHBOARD_GET_USER)
-    public UserDetailResponseView getUserDetails() {
-        return model.getUserDetails();
-    }
+  @GetMapping(DASHBOARD_GET_USER)
+  public User getUserDetails() {
+    return model.getUserDetails();
+  }
 }

@@ -1,85 +1,45 @@
 package com.siddhant.myportfolio.model.login_model;
 
-import com.siddhant.myportfolio.repository.UserRepository;
-import com.siddhant.myportfolio.util.Status;
-import com.siddhant.myportfolio.data.User;
+import com.siddhant.myportfolio.data.AuthenticationRequest;
+import com.siddhant.myportfolio.data.AuthenticationResponse;
+import com.siddhant.myportfolio.util.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
-
-
-import static com.siddhant.myportfolio.util.Status.*;
-import static java.util.Objects.nonNull;
 
 @Slf4j
 @Service
 public class LoginModelImpl implements LoginModel {
 
-    private final UserRepository userRepository;
+  private final AuthenticationManager authenticationManager;
+  private final UserDetailsService userDetailsService;
+  private final JwtUtil jwtUtil;
 
-    public LoginModelImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+  public LoginModelImpl(
+      final AuthenticationManager authenticationManager,
+      @Qualifier("myUserDetailsService") final UserDetailsService userDetailsService,
+      final JwtUtil jwtUtil) {
+    this.authenticationManager = authenticationManager;
+    this.userDetailsService = userDetailsService;
+    this.jwtUtil = jwtUtil;
+  }
 
-    @Override
-    public Status registerUser(User user) {
-        if (nonNull(userRepository.findByUsername(user.getUsername()))){
-            log.info("User: {} Already exists!", user.getUsername());
-            return USER_ALREADY_EXISTS;
-        }
-        else {
-            try {
-                userRepository.save(user);
-            } catch (final Exception e){
-                log.error("Couldn't save entry to db", e);
-                return FAILURE;
-            }
-            log.info("User: {} Successfully Registered", user.getUsername());
-            return SUCCESS;
-        }
+  @Override
+  public ResponseEntity<?> createAuthenticationToken(final AuthenticationRequest request)
+      throws Exception {
+    try {
+      authenticationManager.authenticate(
+          new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+    } catch (final BadCredentialsException e) {
+      throw new Exception("Incorrect username or password", e);
     }
-
-    @Override
-    public Status loginUser(User user) {
-        try {
-            final User existingUser = userRepository.findByUsername(user.getUsername());
-            if (nonNull(existingUser)
-                    && existingUser.getUsername().equals(user.getUsername())
-                    && existingUser.getPassword().equals(user.getPassword())
-                    && !existingUser.isLoggedIn()){
-                user.setLoggedIn(true);
-                user.setId(existingUser.getId());
-                userRepository.save(user);
-                log.info("User: {} Successfully Logged in", user.getUsername());
-                return SUCCESS;
-            }
-        }
-        catch (final Exception e){
-            log.error("Couldn't save entry to db", e);
-            return FAILURE;
-        }
-        log.info("Invalid username password");
-        return FAILURE;
-    }
-
-    @Override
-    public Status logUserOut(User user) {
-        try {
-            final User existingUser = userRepository.findByUsername(user.getUsername());
-            if (nonNull(existingUser)
-                    && existingUser.getUsername().equals(user.getUsername())
-                    && existingUser.getPassword().equals(user.getPassword())
-                    && existingUser.isLoggedIn()){
-                user.setLoggedIn(false);
-                user.setId(existingUser.getId());
-                userRepository.save(user);
-                log.info("User: {} Successfully Logged out", user.getUsername());
-                return SUCCESS;
-            }
-        }
-        catch (final Exception e){
-            log.error("Couldn't save entry to db", e);
-            return FAILURE;
-        }
-        return FAILURE;
-    }
+    final String jwt =
+        jwtUtil.generateToken(userDetailsService.loadUserByUsername(request.getUsername()));
+    return ResponseEntity.ok(AuthenticationResponse.builder().jwt(jwt).build());
+  }
 }

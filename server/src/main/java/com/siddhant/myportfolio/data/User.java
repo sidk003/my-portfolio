@@ -18,19 +18,15 @@ import javax.validation.constraints.NotNull;
 @Document(collection = "users")
 public class User {
 
-    @Transient
-    public static final String SEQUENCE_NAME = "users_sequence";
+  @Transient public static final String SEQUENCE_NAME = "users_sequence";
 
-    @Id
-    private long id;
+  @Id private long id;
 
-    @NotNull
-    @NotEmpty
-    private String username;
+  @NotNull @NotEmpty private String username;
 
-    @NotNull
-    @NotEmpty
-    private String password;
+  @NotNull @NotEmpty private String password;
 
-    private boolean isLoggedIn;
+  private boolean isLoggedIn;
+
+  private UserData userData;
 }
