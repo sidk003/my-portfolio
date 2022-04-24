@@ -20,7 +20,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
   private final JwtRequestFilter jwtRequestFilter;
 
   public SecurityConfigurer(
-          final MyUserDetailsService myUserDetailsService, final JwtRequestFilter jwtRequestFilter) {
+      final MyUserDetailsService myUserDetailsService, final JwtRequestFilter jwtRequestFilter) {
     this.myUserDetailsService = myUserDetailsService;
     this.jwtRequestFilter = jwtRequestFilter;
   }
@@ -40,7 +40,8 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     http.csrf()
         .disable()
         .authorizeRequests()
-        .antMatchers("/api/v1/portfolio-app/user/authenticate")
+        .antMatchers(
+            "/api/v1/portfolio-app/user/authenticate", "/api/v1/portfolio-app/user/registration")
         .permitAll()
         .anyRequest()
         .authenticated()
