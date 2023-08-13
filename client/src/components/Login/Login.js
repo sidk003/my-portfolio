@@ -14,24 +14,8 @@ import {
   Grid,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://github.com/sidk003">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+import { Footer } from "../Footer/Footer";
+import { BACKGROUND_IMAGE_URL } from "../../Constants";
 
 const theme = createTheme();
 
@@ -56,7 +40,7 @@ export const Login = () => {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: "url(https://source.unsplash.com/random)",
+            backgroundImage: `url(${BACKGROUND_IMAGE_URL})`,
             backgroundRepeat: "no-repeat",
             backgroundColor: (t) =>
               t.palette.mode === "light"
@@ -132,7 +116,7 @@ export const Login = () => {
                   </Link>
                 </Grid>
               </Grid>
-              <Copyright sx={{ mt: 5 }} />
+              <Footer sx={{ mt: 5 }} />
             </Box>
           </Box>
         </Grid>

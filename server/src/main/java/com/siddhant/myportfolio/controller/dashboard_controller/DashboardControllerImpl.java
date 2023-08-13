@@ -19,7 +19,7 @@ public class DashboardControllerImpl {
   }
 
   @GetMapping(DASHBOARD_GET_USER)
-  public User getUserDetails() {
-    return model.getUserDetails();
+  public User getUserDetails(final String userName) {
+    return model.getUserDetails(userName);
   }
 }

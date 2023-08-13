@@ -1,16 +1,15 @@
 package com.siddhant.myportfolio.service.user_detail_service;
 
+import com.siddhant.myportfolio.data.User;
 import com.siddhant.myportfolio.repository.UserRepository;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import static java.util.Objects.isNull;
 
+@Slf4j
 @Service
-public class MyUserDetailsService implements UserDetailsService {
+public class MyUserDetailsService {
 
   private final UserRepository userRepository;
 
@@ -18,9 +17,12 @@ public class MyUserDetailsService implements UserDetailsService {
     this.userRepository = userRepository;
   }
 
-  @Override
-  public UserDetails loadUserByUsername(final String userName) throws UsernameNotFoundException {
-    final com.siddhant.myportfolio.data.User existingUser = userRepository.findByUsername(userName);
-    return new User(existingUser.getUsername(), existingUser.getPassword(), List.of());
+  public User getUserByUserName(final String userName) {
+    final User user = userRepository.findByUsername(userName);
+    if (isNull(user)) {
+      log.warn("User not found: {}", userName);
+      throw new IllegalArgumentException("User not found");
+    }
+    return user;
   }
 }
