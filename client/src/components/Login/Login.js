@@ -1,9 +1,8 @@
-import { React } from "react";
+import { React, useCallback } from "react";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import {
   Avatar,
   Button,
-  Link,
   Typography,
   CssBaseline,
   TextField,
@@ -14,37 +13,25 @@ import {
   Grid,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://github.com/sidk003">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+import { Footer } from "../Footer/Footer";
+import { BACKGROUND_IMAGE_URL } from "../../Constants";
+import { Link, useNavigate } from "react-router-dom";
 
 const theme = createTheme();
 
 export const Login = () => {
-  const handleSubmit = (event) => {
+  const navigate = useNavigate();
+
+  const handleSubmit = useCallback((event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
     console.log({
       email: data.get("email"),
       password: data.get("password"),
     });
-  };
+    // IF validation is successfull, navigate
+    navigate("/landingPage");
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
@@ -56,7 +43,7 @@ export const Login = () => {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: "url(https://source.unsplash.com/random)",
+            backgroundImage: `url(${BACKGROUND_IMAGE_URL})`,
             backgroundRepeat: "no-repeat",
             backgroundColor: (t) =>
               t.palette.mode === "light"
@@ -120,19 +107,16 @@ export const Login = () => {
               >
                 Sign In
               </Button>
+
               <Grid container>
                 <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
+                  <Link to="/forgotPassword">Forgot password?</Link>
                 </Grid>
                 <Grid item>
-                  <Link href="#" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
+                  <Link to="/signUp">Don't have an account? Sign Up</Link>
                 </Grid>
               </Grid>
-              <Copyright sx={{ mt: 5 }} />
+              <Footer sx={{ mt: 5 }} />
             </Box>
           </Box>
         </Grid>
