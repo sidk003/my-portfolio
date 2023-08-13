@@ -25,12 +25,11 @@ export const Login = () => {
   const handleSubmit = useCallback((event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-    // IF validation is successfull, navigate
-    navigate("/landingPage");
+    const email = data.get("email");
+    const password = data.get("password");
+    if (email.length > 0 && password.length > 0) {
+      navigate("/landingPage");
+    }
   }, []);
 
   return (
@@ -111,6 +110,9 @@ export const Login = () => {
               <Grid container>
                 <Grid item xs>
                   <Link to="/forgotPassword">Forgot password?</Link>
+                </Grid>
+                <Grid item xs>
+                  <Link to="/landingPage">Want a Demo?</Link>
                 </Grid>
                 <Grid item>
                   <Link to="/signUp">Don't have an account? Sign Up</Link>
