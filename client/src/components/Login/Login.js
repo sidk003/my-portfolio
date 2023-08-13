@@ -1,9 +1,8 @@
-import { React } from "react";
+import { React, useCallback } from "react";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import {
   Avatar,
   Button,
-  Link,
   Typography,
   CssBaseline,
   TextField,
@@ -16,19 +15,23 @@ import {
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Footer } from "../Footer/Footer";
 import { BACKGROUND_IMAGE_URL } from "../../Constants";
+import { Link, useNavigate } from "react-router-dom";
 
 const theme = createTheme();
 
 export const Login = () => {
-  const handleSubmit = (event) => {
+  const navigate = useNavigate();
+
+  const handleSubmit = useCallback((event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
     console.log({
       email: data.get("email"),
       password: data.get("password"),
     });
-  };
+    // IF validation is successfull, navigate
+    navigate("/landingPage");
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
@@ -104,16 +107,13 @@ export const Login = () => {
               >
                 Sign In
               </Button>
+
               <Grid container>
                 <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
+                  <Link to="/forgotPassword">Forgot password?</Link>
                 </Grid>
                 <Grid item>
-                  <Link href="#" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
+                  <Link to="/signUp">Don't have an account? Sign Up</Link>
                 </Grid>
               </Grid>
               <Footer sx={{ mt: 5 }} />
