@@ -22,15 +22,18 @@ const theme = createTheme();
 export const Login = () => {
   const navigate = useNavigate();
 
-  const handleSubmit = useCallback((event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const email = data.get("email");
-    const password = data.get("password");
-    if (email.length > 0 && password.length > 0) {
-      navigate("/landingPage");
-    }
-  }, []);
+  const handleSubmit = useCallback(
+    (event) => {
+      event.preventDefault();
+      const data = new FormData(event.currentTarget);
+      const email = data.get("email");
+      const password = data.get("password");
+      if (email.length > 0 && password.length > 0) {
+        navigate("/homePage");
+      }
+    },
+    [navigate]
+  );
 
   return (
     <ThemeProvider theme={theme}>
@@ -65,7 +68,7 @@ export const Login = () => {
             <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
               <LockOutlinedIcon />
             </Avatar>
-            <Typography component="h1" variant="h5">
+            <Typography component="h1" variant="h4">
               Sign in
             </Typography>
             <Box
@@ -112,7 +115,7 @@ export const Login = () => {
                   <Link to="/forgotPassword">Forgot password?</Link>
                 </Grid>
                 <Grid item xs>
-                  <Link to="/landingPage">Want a Demo?</Link>
+                  <Link to="/homePage">Want a Demo?</Link>
                 </Grid>
                 <Grid item>
                   <Link to="/signUp">Don't have an account? Sign Up</Link>
