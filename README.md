@@ -2,4 +2,4 @@
 
 Full stack web application to manage and track user's Financial portfolio.
 
-Application UI deplyed on AWS Amplify
+Application UI deployed on AWS Amplify
