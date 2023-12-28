@@ -5,12 +5,11 @@ import {
   Toolbar,
   IconButton,
   Typography,
-  Avatar,
   Drawer,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Link } from "react-router-dom";
 import { ListItems } from "./ListItems";
+import { UserProfile } from "./UserProfile";
 
 export const TopBar = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -39,11 +38,7 @@ export const TopBar = () => {
           <Drawer open={isDrawerOpen} onClose={toggleSlider}>
             <ListItems toggleSlider={toggleSlider} />
           </Drawer>
-          <Link to="/">
-            <IconButton size="large">
-              <Avatar alt="Sid K" />
-            </IconButton>
-          </Link>
+          <UserProfile />
         </Toolbar>
       </AppBar>
     </Box>
